@@ -22,3 +22,5 @@ app.use('/api/users', userRoutes);
 
 const bookRoutes = require('./routes/books');
 app.use('/api/books', bookRoutes);
+const cartRoutes = require("./routes/cartRoutes");
+app.use("/api/cart", cartRoutes);

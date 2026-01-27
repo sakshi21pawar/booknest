@@ -13,11 +13,13 @@ const getCart = async (req, res) => {
       WHERE c.user_id = ?
     `, [userId]);
 
-    // Ensure an array is always returned
-    res.json(items || []);
+    res.json({
+      success: true,
+      items: items || []
+    });
   } catch (err) {
     console.error("getCart error:", err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
@@ -27,7 +29,7 @@ const addToCart = async (req, res) => {
   const { bookId } = req.body;
 
   if (!bookId) {
-    return res.status(400).json({ message: "Book ID is required" });
+    return res.status(400).json({ success: false, message: "Book ID is required" });
   }
 
   try {
@@ -56,12 +58,15 @@ const addToCart = async (req, res) => {
       [cartId, bookId]
     );
 
+    let quantity;
+
     if (itemRows.length > 0) {
       // increment quantity
       await db.promise().query(
         "UPDATE cart_items SET quantity = quantity + 1 WHERE id = ?",
         [itemRows[0].id]
       );
+      quantity = itemRows[0].quantity + 1;
       console.log("Incremented quantity for book", bookId);
     } else {
       // add new item
@@ -69,13 +74,23 @@ const addToCart = async (req, res) => {
         "INSERT INTO cart_items (cart_id, book_id, quantity) VALUES (?, ?, 1)",
         [cartId, bookId]
       );
+      quantity = 1;
       console.log("Inserted new book into cart:", bookId);
     }
 
-    res.json({ message: "Book added to cart" });
+    // Respond with proper JSON
+    res.json({
+      success: true,
+      message: "Book added to cart",
+      cartItem: {
+        bookId,
+        quantity
+      }
+    });
+
   } catch (err) {
     console.error("addToCart error:", err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
@@ -85,7 +100,7 @@ const updateQuantity = async (req, res) => {
   const { bookId, quantity } = req.body;
 
   if (!bookId || quantity == null) {
-    return res.status(400).json({ message: "Book ID and quantity are required" });
+    return res.status(400).json({ success: false, message: "Book ID and quantity are required" });
   }
 
   try {
@@ -96,10 +111,10 @@ const updateQuantity = async (req, res) => {
       WHERE c.user_id = ? AND ci.book_id = ?
     `, [quantity, userId, bookId]);
 
-    res.json({ message: "Quantity updated" });
+    res.json({ success: true, message: "Quantity updated" });
   } catch (err) {
     console.error("updateQuantity error:", err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
@@ -108,7 +123,7 @@ const removeFromCart = async (req, res) => {
   const userId = req.user.id;
   const bookId = req.params.bookId;
 
-  if (!bookId) return res.status(400).json({ message: "Book ID is required" });
+  if (!bookId) return res.status(400).json({ success: false, message: "Book ID is required" });
 
   try {
     await db.promise().query(`
@@ -117,10 +132,10 @@ const removeFromCart = async (req, res) => {
       WHERE c.user_id = ? AND ci.book_id = ?
     `, [userId, bookId]);
 
-    res.json({ message: "Item removed" });
+    res.json({ success: true, message: "Item removed" });
   } catch (err) {
     console.error("removeFromCart error:", err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 

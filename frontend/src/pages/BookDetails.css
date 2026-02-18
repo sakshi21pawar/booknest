@@ -1,0 +1,451 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+/* ========================
+   VARIABLES
+======================== */
+:root {
+  --parchment: #f9f7f4;
+  --parchment-dark: #f0ede8;
+  --dust-grey: #e8e4de;
+  --deep-teal: #2a9d8f;
+  --deep-teal-dark: #21867a;
+  --deep-teal-light: rgba(42, 157, 143, 0.1);
+  --charcoal: #2c3e50;
+  --soft-gray: #95a5a6;
+  --gold: #e9b44c;
+  --card-shadow: 0 2px 16px rgba(44, 62, 80, 0.07);
+  --hover-shadow: 0 12px 32px rgba(44, 62, 80, 0.13);
+  --teal-shadow: 0 8px 24px rgba(42, 157, 143, 0.22);
+}
+
+/* ========================
+   BASE
+======================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+.book-details-container {
+  font-family: 'Poppins', sans-serif;
+  background: var(--parchment);
+  min-height: 100vh;
+  color: var(--charcoal);
+}
+
+/* ========================
+   LOADING / NOT FOUND
+======================== */
+.loading, .not-found {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  font-size: 1.1rem;
+  color: var(--soft-gray);
+}
+
+/* ========================
+   BOOK HEADER / HERO
+======================== */
+.book-header {
+  background:
+    linear-gradient(135deg, rgba(42,157,143,0.9), rgba(138,154,91,0.85)),
+    url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 56px 24px 48px;
+  text-align: center;
+  position: relative;
+}
+
+.book-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0; right: 0;
+  height: 50px;
+  background: var(--parchment);
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+
+.book-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  margin: 0 0 8px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.book-header > p {
+  font-size: 1rem;
+  opacity: 0.88;
+  margin: 0 0 16px;
+  font-style: italic;
+}
+
+/* Average Rating in Header */
+.average-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 6px 18px;
+  border-radius: 50px;
+  backdrop-filter: blur(8px);
+  margin-top: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.star { font-size: 1.1rem; }
+.star.filled { color: var(--gold); }
+.star.half, .star.empty { color: rgba(255,255,255,0.5); }
+
+.rating-number {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+}
+
+.review-count {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.8);
+}
+
+/* Logout button in header */
+.logout-btn {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  color: white;
+  padding: 7px 18px;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  backdrop-filter: blur(6px);
+}
+
+.logout-btn:hover {
+  background: rgba(255,255,255,0.25);
+  transform: translateY(-1px);
+}
+
+/* ========================
+   BOOK MAIN SECTION
+======================== */
+.book-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Book Image */
+.book-image {
+  position: sticky;
+  top: 90px;
+}
+
+.book-image img {
+  width: 100%;
+  border-radius: 14px;
+  box-shadow: var(--hover-shadow);
+  object-fit: cover;
+  aspect-ratio: 2/3;
+  border: 1px solid var(--dust-grey);
+}
+
+/* Book Info */
+.book-info {
+  background: white;
+  border-radius: 14px;
+  padding: 32px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--dust-grey);
+}
+
+.book-info h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--charcoal);
+  margin: 0 0 12px;
+}
+
+.book-info > p {
+  color: var(--soft-gray);
+  line-height: 1.8;
+  font-size: 0.95rem;
+  margin: 0 0 28px;
+}
+
+.book-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--charcoal);
+  margin: 0 0 14px;
+  padding-top: 20px;
+  border-top: 1.5px solid var(--dust-grey);
+}
+
+.book-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.book-info ul li {
+  font-size: 0.88rem;
+  color: var(--soft-gray);
+  background: var(--parchment);
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--dust-grey);
+}
+
+.book-info ul li strong {
+  color: var(--charcoal);
+  font-weight: 600;
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn {
+  width: 100%;
+  padding: 14px 28px;
+  background: var(--deep-teal);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-top: 8px;
+}
+
+.add-to-cart-btn:hover:not(:disabled) {
+  background: var(--deep-teal-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--teal-shadow);
+}
+
+.add-to-cart-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ========================
+   REVIEWS SECTION
+======================== */
+.book-reviews {
+  max-width: 1100px;
+  margin: 0 auto 60px;
+  padding: 0 24px;
+}
+
+.book-reviews > h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--charcoal);
+  margin: 0 0 24px;
+  padding-bottom: 14px;
+  border-bottom: 1.5px solid var(--dust-grey);
+}
+
+/* Review List */
+.book-reviews ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.book-reviews ul li {
+  background: white;
+  border: 1px solid var(--dust-grey);
+  border-radius: 12px;
+  padding: 18px 20px;
+  font-size: 0.92rem;
+  color: var(--charcoal);
+  line-height: 1.6;
+  box-shadow: var(--card-shadow);
+  transition: all 0.2s ease;
+}
+
+.book-reviews ul li:hover {
+  border-color: var(--deep-teal);
+  transform: translateY(-1px);
+}
+
+.book-reviews ul li strong {
+  color: var(--deep-teal);
+  font-weight: 600;
+}
+
+.book-reviews > p {
+  color: var(--soft-gray);
+  font-size: 0.95rem;
+  margin-bottom: 32px;
+}
+
+/* ========================
+   ADD REVIEW FORM
+======================== */
+.add-review-form {
+  background: white;
+  border-radius: 14px;
+  padding: 32px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--dust-grey);
+}
+
+.add-review-form h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--charcoal);
+  margin: 0 0 20px;
+}
+
+.add-review-form label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--charcoal);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Star Rating */
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.star-rating button {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: var(--dust-grey);
+  transition: all 0.15s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.star-rating button.active { color: var(--gold); }
+
+.star-rating button:hover { transform: scale(1.2); }
+
+.star-rating span {
+  font-size: 0.85rem;
+  color: var(--soft-gray);
+  margin-left: 6px;
+}
+
+/* Textarea */
+.add-review-form textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid var(--dust-grey);
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
+  color: var(--charcoal);
+  background: var(--parchment);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 20px;
+  min-height: 110px;
+}
+
+.add-review-form textarea:focus {
+  border-color: var(--deep-teal);
+  background: white;
+  box-shadow: 0 0 0 3px var(--deep-teal-light);
+}
+
+.add-review-form textarea::placeholder { color: #bdc3c7; }
+
+/* Submit Button */
+.add-review-form > button {
+  padding: 13px 32px;
+  background: var(--deep-teal);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.add-review-form > button:hover:not(:disabled) {
+  background: var(--deep-teal-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--teal-shadow);
+}
+
+.add-review-form > button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ========================
+   RESPONSIVE
+======================== */
+@media (max-width: 768px) {
+  .book-main {
+    grid-template-columns: 1fr;
+    padding: 32px 16px;
+    gap: 24px;
+  }
+
+  .book-image {
+    position: static;
+    max-width: 220px;
+    margin: 0 auto;
+  }
+
+  .book-info { padding: 24px; }
+
+  .book-info ul { grid-template-columns: 1fr; }
+
+  .book-reviews { padding: 0 16px; }
+
+  .add-review-form { padding: 24px; }
+
+  .logout-btn { position: static; margin-top: 16px; }
+
+  .book-header { padding: 48px 16px 44px; }
+}
+
+@media (max-width: 480px) {
+  .book-header h1 { font-size: 1.6rem; }
+  .average-rating { font-size: 0.8rem; }
+  .book-info { padding: 18px; }
+  .add-review-form { padding: 18px; }
+  .star-rating button { font-size: 1.5rem; }
+}

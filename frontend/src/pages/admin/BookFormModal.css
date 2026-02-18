@@ -1,0 +1,461 @@
+/* ========================
+   BOOK FORM MODAL - FULLY RESPONSIVE
+======================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+:root {
+  --parchment: #f9f7f4;
+  --parchment-dark: #f0ede8;
+  --dust-grey: #e8e4de;
+  --deep-teal: #2a9d8f;
+  --deep-teal-dark: #21867a;
+  --deep-teal-light: rgba(42, 157, 143, 0.1);
+  --charcoal: #2c3e50;
+  --soft-gray: #95a5a6;
+  --gold: #e9b44c;
+  --white: #ffffff;
+  --card-shadow: 0 2px 16px rgba(44, 62, 80, 0.07);
+  --hover-shadow: 0 12px 32px rgba(44, 62, 80, 0.13);
+  --teal-shadow: 0 8px 24px rgba(42, 157, 143, 0.22);
+  --transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(44, 62, 80, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  overflow-y: auto;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Modal Content */
+.modal-content {
+  background: var(--parchment);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: var(--hover-shadow);
+  animation: slideUp 0.3s ease;
+  border: 1.5px solid var(--dust-grey);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal Header */
+.modal-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--charcoal);
+  padding: 24px 24px 16px;
+  margin: 0;
+  position: relative;
+  background: var(--white);
+  border-radius: 24px 24px 0 0;
+  border-bottom: 1.5px solid var(--dust-grey);
+}
+
+@media (min-width: 768px) {
+  .modal-content h2 {
+    font-size: 1.8rem;
+    padding: 28px 32px 20px;
+  }
+}
+
+.modal-content h2::after {
+  content: '';
+  position: absolute;
+  bottom: -1.5px;
+  left: 24px;
+  width: 60px;
+  height: 3px;
+  background: var(--deep-teal);
+  border-radius: 2px;
+}
+
+@media (min-width: 768px) {
+  .modal-content h2::after {
+    left: 32px;
+    width: 80px;
+  }
+}
+
+/* Form Container */
+.book-form {
+  padding: 20px 24px 24px;
+  background: var(--parchment);
+  border-radius: 0 0 24px 24px;
+}
+
+@media (min-width: 768px) {
+  .book-form {
+    padding: 28px 32px 32px;
+  }
+}
+
+/* Form Grid Layout */
+@media (min-width: 640px) {
+  .book-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .book-form input:nth-child(1),
+  .book-form input:nth-child(2),
+  .book-form input:nth-child(3),
+  .book-form .modal-buttons {
+    grid-column: span 2;
+  }
+}
+
+/* Input Fields */
+.book-form input {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  border: 1.5px solid var(--dust-grey);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--charcoal);
+  transition: var(--transition);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+@media (min-width: 768px) {
+  .book-form input {
+    padding: 14px 18px;
+    margin-bottom: 0;
+    font-size: 1rem;
+  }
+}
+
+/* Input Focus State */
+.book-form input:focus {
+  outline: none;
+  border-color: var(--deep-teal);
+  box-shadow: 0 0 0 3px var(--deep-teal-light);
+}
+
+/* Input Hover State */
+.book-form input:hover {
+  border-color: var(--deep-teal);
+}
+
+/* Input Placeholder */
+.book-form input::placeholder {
+  color: var(--soft-gray);
+  opacity: 0.7;
+}
+
+/* Number Input Specific */
+.book-form input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.book-form input[type="number"]::-webkit-outer-spin-button,
+.book-form input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Rating Input - Special Styling */
+.book-form input[name="rating"] {
+  background-image: linear-gradient(90deg, var(--gold) 0%, var(--gold) 0%);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 0.3s ease;
+}
+
+/* Button Container */
+.modal-buttons {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+@media (min-width: 480px) {
+  .modal-buttons {
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 28px;
+  }
+}
+
+@media (min-width: 640px) {
+  .modal-buttons {
+    grid-column: span 2;
+    margin-top: 8px;
+  }
+}
+
+/* Buttons */
+.modal-buttons button {
+  padding: 14px 28px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .modal-buttons button {
+    width: auto;
+    min-width: 120px;
+  }
+}
+
+/* Submit Button */
+.modal-buttons button[type="submit"] {
+  background: var(--deep-teal);
+  color: var(--white);
+  box-shadow: var(--card-shadow);
+}
+
+.modal-buttons button[type="submit"]:hover {
+  background: var(--deep-teal-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--teal-shadow);
+}
+
+.modal-buttons button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Cancel Button */
+.modal-buttons .close-btn {
+  background: var(--white);
+  color: var(--charcoal);
+  border: 1.5px solid var(--dust-grey);
+}
+
+.modal-buttons .close-btn:hover {
+  background: var(--parchment-dark);
+  border-color: var(--soft-gray);
+  transform: translateY(-2px);
+}
+
+.modal-buttons .close-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive Typography */
+@media (max-width: 380px) {
+  .modal-content h2 {
+    font-size: 1.3rem;
+    padding: 20px 20px 16px;
+  }
+  
+  .book-form {
+    padding: 16px 20px 20px;
+  }
+  
+  .book-form input {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+  }
+  
+  .modal-buttons button {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  .book-form input,
+  .modal-buttons button {
+    min-height: 48px; /* Better touch target */
+  }
+  
+  .modal-buttons {
+    gap: 16px; /* More space for touch */
+  }
+}
+
+/* Landscape Mode on Mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .modal-overlay {
+    align-items: flex-start;
+    padding: 8px;
+  }
+  
+  .modal-content {
+    max-height: 85vh;
+    margin: 8px 0;
+  }
+  
+  .book-form {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .book-form input {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .modal-content h2 {
+    padding: 16px 24px 12px;
+    font-size: 1.4rem;
+  }
+}
+
+/* Form Validation Styles */
+.book-form input:invalid {
+  border-color: #e76f51;
+}
+
+.book-form input:invalid:focus {
+  box-shadow: 0 0 0 3px rgba(231, 111, 81, 0.1);
+}
+
+/* Success State for Numbers */
+.book-form input[type="number"]:valid {
+  border-color: var(--deep-teal);
+}
+
+/* Loading State for Submit Button */
+.modal-buttons button[type="submit"].loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+  position: relative;
+  color: transparent;
+}
+
+.modal-buttons button[type="submit"].loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin-left: -10px;
+  margin-top: -10px;
+  border: 2px solid var(--white);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: button-spin 0.8s linear infinite;
+}
+
+@keyframes button-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Scrollbar Styling */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: var(--parchment-dark);
+  border-radius: 0 0 24px 0;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: var(--deep-teal);
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: var(--deep-teal-dark);
+}
+
+/* Optional: Add helper text for inputs */
+.input-hint {
+  font-size: 0.75rem;
+  color: var(--soft-gray);
+  margin-top: -12px;
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+@media (min-width: 640px) {
+  .input-hint {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+/* Animation for modal opening */
+.modal-overlay {
+  animation: overlayFade 0.3s ease;
+}
+
+@keyframes overlayFade {
+  from { opacity: 0; backdrop-filter: blur(0); }
+  to { opacity: 1; backdrop-filter: blur(5px); }
+}
+
+/* Ensure content is readable on all devices */
+@media (max-width: 480px) {
+  .modal-content {
+    border-radius: 20px;
+  }
+  
+  .book-form input {
+    border-radius: 10px;
+  }
+  
+  .modal-buttons button {
+    border-radius: 10px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .modal-content {
+    border: 2px solid var(--charcoal);
+  }
+  
+  .book-form input {
+    border: 2px solid var(--charcoal);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .modal-overlay,
+  .modal-content,
+  .book-form input,
+  .modal-buttons button {
+    animation: none;
+    transition: none;
+  }
+}

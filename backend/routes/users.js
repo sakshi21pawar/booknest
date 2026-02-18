@@ -1,3 +1,4 @@
+// backend/routes/users.js
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
@@ -11,68 +12,67 @@ require('dotenv').config();
 router.post('/register', (req, res) => {
   const { name, email, password } = req.body;
 
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
   db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
-    if (err) return res.status(500).json({ message: 'Database error' });
+    if (err) return res.status(500).json({ message: 'Database error', error: err });
     if (results.length > 0) return res.status(400).json({ message: 'User already exists' });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-    db.query(
-      'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-      [name, email, hashedPassword],
-      (err, result) => {
-        if (err) return res.status(500).json({ message: 'Error creating user' });
+      db.query(
+        'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+        [name, email, hashedPassword],
+        (err, result) => {
+          if (err) return res.status(500).json({ message: 'Error creating user', error: err });
 
-        const token = jwt.sign(
-          { id: result.insertId, email },
-          process.env.JWT_SECRET,
-          { expiresIn: '1h' }
-        );
+          const token = jwt.sign(
+            { id: result.insertId, email },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' } // 1 hour token expiration
+          );
 
-        res.status(201).json({
-          token,
-          message: 'User registered successfully'
-        });
-      }
-    );
+          res.status(201).json({
+            token,
+            message: 'User registered successfully',
+            user: { id: result.insertId, name, email }
+          });
+        }
+      );
+    } catch (hashErr) {
+      res.status(500).json({ message: 'Error hashing password', error: hashErr });
+    }
   });
 });
 
 /* ======================
-   LOGIN ROUTE (ADD THIS)
+   LOGIN ROUTE
    ====================== */
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
 
-  // 1. Validate input
   if (!email || !password) {
     return res.status(400).json({ message: 'Email and password are required' });
   }
 
-  // 2. Find user by email
   db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
-    if (err) return res.status(500).json({ message: 'Database error' });
-
-    if (results.length === 0) {
-      return res.status(400).json({ message: 'User not found' });
-    }
+    if (err) return res.status(500).json({ message: 'Database error', error: err });
+    if (results.length === 0) return res.status(400).json({ message: 'User not found' });
 
     const user = results[0];
 
-    // 3. Compare password
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid password' });
-    }
+    if (!isMatch) return res.status(400).json({ message: 'Invalid password' });
 
-    // 4. Generate JWT
     const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '1h' } // 1 hour expiration
     );
 
-    // 5. Send response
     res.json({
       token,
       message: 'Login successful',

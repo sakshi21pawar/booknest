@@ -1,9 +1,11 @@
+import API_URL from '../config';
+
 export const getBookById = (id) => {
-  return fetch(`http://localhost:5000/api/books/${id}`);
+  return fetch(`${API_URL}/api/books/${id}`);
 };
 
 export const addReview = (bookId, review, token) => {
-  return fetch(`http://localhost:5000/api/reviews/${bookId}`, {
+  return fetch(`${API_URL}/api/reviews/${bookId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

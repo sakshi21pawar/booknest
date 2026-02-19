@@ -1,4 +1,6 @@
-const API = "http://localhost:5000/api/cart"; // replace with your backend URL
+import API_URL from '../config';
+
+const API = `${API_URL}/api/cart`;
 
 // Get user cart
 export const getCart = async (token) => {
@@ -6,7 +8,7 @@ export const getCart = async (token) => {
     headers: { Authorization: `Bearer ${token}` }
   });
   const data = await res.json();
-  if (data.success) return data.items; // return items directly
+  if (data.success) return data.items;
   throw new Error(data.message || "Failed to fetch cart");
 };
 
@@ -21,7 +23,7 @@ export const addToCart = async (bookId, token) => {
     body: JSON.stringify({ bookId })
   });
   const data = await res.json();
-  if (data.success) return data.cartItem; // return added item
+  if (data.success) return data.cartItem;
   throw new Error(data.message || "Failed to add to cart");
 };
 

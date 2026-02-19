@@ -1,4 +1,6 @@
-const API = "http://localhost:5000/api/orders";
+import API_URL from '../config';
+
+const API = `${API_URL}/api/orders`;
 
 const getHeaders = (token) => ({ Authorization: `Bearer ${token}` });
 

@@ -3,6 +3,7 @@ console.log('process.env.JWT_SECRET:', process.env.JWT_SECRET);
 
 const express = require('express');
 const cors = require('cors');
+const path = require('path'); // <-- Needed to serve frontend
 const app = express();
 
 // Middleware
@@ -10,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 // Test route
-app.get('/', (req, res) => {
+app.get('/api/test', (req, res) => {
     res.send("Server is running");
 });
 
@@ -23,6 +24,15 @@ const cartRoutes = require('./routes/cartRoutes');
 app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/cart', cartRoutes);
+
+// Serve frontend build for production
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+    });
+}
 
 // Start server
 const PORT = process.env.PORT || 5000;

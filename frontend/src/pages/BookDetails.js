@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import API_URL from "../config";
 import "./BookDetails.css";
 
 const BookDetails = () => {
@@ -42,7 +43,7 @@ const BookDetails = () => {
 
   const fetchBook = useCallback(async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/books/${id}`);
+      const res = await axios.get(`${API_URL}/api/books/${id}`);
       setBook(res.data);
     } catch (err) {
       console.error("Failed to fetch book:", err);
@@ -70,7 +71,7 @@ const BookDetails = () => {
     setSubmitting(true);
     try {
       await axios.post(
-        `http://localhost:5000/api/books/${id}/reviews`,
+        `${API_URL}/api/books/${id}/reviews`,
         { rating: Number(rating), comment },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -103,12 +104,9 @@ const BookDetails = () => {
 
   return (
     <div className="book-details-container">
-
-      {/* ── HERO HEADER ── */}
       <div className="book-header">
         <h1>{book.title}</h1>
         <p>by {book.author}</p>
-
         <div className="average-rating">
           {book.review_count > 0 ? (
             <>
@@ -120,22 +118,16 @@ const BookDetails = () => {
             <span>No ratings yet</span>
           )}
         </div>
-
         {user && (
           <button className="logout-btn" onClick={() => {
             localStorage.removeItem("token");
             localStorage.removeItem("user");
             navigate("/login");
-          }}>
-            Logout
-          </button>
+          }}>Logout</button>
         )}
       </div>
 
-      {/* ── BOOK MAIN ── */}
       <div className="book-main">
-
-        {/* Image */}
         <div className="book-image">
           <img
             src={book.image_url || "https://via.placeholder.com/250x350"}
@@ -143,32 +135,26 @@ const BookDetails = () => {
             onError={(e) => (e.target.src = "https://via.placeholder.com/250x350")}
           />
         </div>
-
-        {/* Info */}
         <div className="book-info">
           <h2>Description</h2>
           <p>{book.description || "No description available."}</p>
-
           <h3>Details</h3>
           <ul>
-            {book.genre    && <li><strong>Genre:</strong> {book.genre}</li>}
-            {book.pages    && <li><strong>Pages:</strong> {book.pages}</li>}
-            {book.language && <li><strong>Language:</strong> {book.language}</li>}
+            {book.genre     && <li><strong>Genre:</strong> {book.genre}</li>}
+            {book.pages     && <li><strong>Pages:</strong> {book.pages}</li>}
+            {book.language  && <li><strong>Language:</strong> {book.language}</li>}
             {book.publisher && <li><strong>Publisher:</strong> {book.publisher}</li>}
-            {book.category && <li><strong>Category:</strong> {book.category}</li>}
+            {book.category  && <li><strong>Category:</strong> {book.category}</li>}
             {book.stock !== undefined && <li><strong>Stock:</strong> {book.stock}</li>}
           </ul>
-
           <button className="add-to-cart-btn" onClick={handleAddToCart} disabled={addingToCart}>
             {addingToCart ? "Adding to Cart..." : "🛒 Add to Cart"}
           </button>
         </div>
       </div>
 
-      {/* ── REVIEWS ── */}
       <div className="book-reviews">
         <h2>Customer Reviews</h2>
-
         {book.reviews && book.reviews.length > 0 ? (
           <ul>
             {book.reviews.map((r) => (
@@ -183,39 +169,22 @@ const BookDetails = () => {
           <p>No reviews yet. Be the first to share your thoughts!</p>
         )}
 
-        {/* Write Review Form */}
         <div className="add-review-form">
           <h3>Write a Review</h3>
-
           <label>Your Rating</label>
           <div className="star-rating">
             {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                type="button"
-                className={rating >= star ? "active" : ""}
-                onClick={() => setRating(star)}
-              >
-                ★
-              </button>
+              <button key={star} type="button" className={rating >= star ? "active" : ""} onClick={() => setRating(star)}>★</button>
             ))}
             <span>{rating} star{rating !== 1 ? "s" : ""}</span>
           </div>
-
           <label>Your Comment</label>
-          <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="Share your thoughts about this book..."
-            rows={4}
-          />
-
+          <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Share your thoughts..." rows={4} />
           <button onClick={handleSubmitReview} disabled={submitting || !comment.trim()}>
             {submitting ? "Submitting..." : "Submit Review"}
           </button>
         </div>
       </div>
-
     </div>
   );
 };

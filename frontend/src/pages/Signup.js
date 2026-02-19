@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaBook, FaUser, FaEnvelope, FaLock, FaUserPlus } from 'react-icons/fa';
+import { FaBook, FaUserPlus } from 'react-icons/fa';
+import API_URL from '../config';
 import './Signup.css';
 
 function Signup() {
@@ -41,7 +42,7 @@ function Signup() {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/users/register',
+        `${API_URL}/api/users/register`,
         { name: formData.name, email: formData.email, password: formData.password },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -69,14 +70,12 @@ function Signup() {
         <h1>Create Account</h1>
         <p className="signup-subtitle">Join our community of book lovers today</p>
 
-        {/* Success */}
         {success && (
           <div className="success-message">
             ✓ Account created successfully!<br />Redirecting to login...
           </div>
         )}
 
-        {/* Form */}
         {!success && (
           <form onSubmit={handleSubmit} className="signup-form">
 

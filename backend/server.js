@@ -7,7 +7,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: "https://booknest-frontend.onrender.com" // replace with your actual frontend URL after deploying
+  origin: "https://booknest-frontend-dzrd.onrender.com"
 }));
 app.use(express.json());
 

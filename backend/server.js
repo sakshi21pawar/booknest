@@ -4,10 +4,21 @@ console.log('process.env.JWT_SECRET:', process.env.JWT_SECRET);
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const db = require('./db');
+
+// Test DB connection
+db.getConnection((err, connection) => {
+  if (err) {
+    console.error('❌ Database connection failed:', err.message);
+  } else {
+    console.log('✅ Database connected successfully!');
+    connection.release();
+  }
+});
 
 // Middleware
 app.use(cors({
-  origin: "https://booknest-frontend-dzrd.onrender.com"
+  origin: ["https://booknest-frontend-dzrd.onrender.com", "http://localhost:3000"]
 }));
 app.use(express.json());
 
